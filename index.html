@@ -26,10 +26,7 @@
             --accent-light: #00d4ff;
             --accent-purple: #8a2be2;
             --accent-glow: rgba(0, 85, 255, 0.6);
-            /* SVG Noise for Real Glassmorphism */
-            --glass-noise: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.06'/%3E%3C/svg%3E");
             
-            /* Dynamic variables for 3D parallax set by JS */
             --mouse-x: 0deg;
             --mouse-y: 0deg;
         }
@@ -41,7 +38,7 @@
             color: var(--text-main);
             overflow-x: hidden;
             scroll-behavior: smooth;
-            cursor: none; /* Hide default cursor */
+            cursor: none; 
             background-image: radial-gradient(circle at 10% 40%, rgba(0, 212, 255, 0.08), transparent 40%),
                               radial-gradient(circle at 90% 60%, rgba(138, 43, 226, 0.06), transparent 40%);
         }
@@ -68,16 +65,13 @@
 
         /* ===== AMBIENT FLOATING ORBS & PARTICLES ===== */
         .orb-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none; overflow: hidden; }
-        .orb { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.7; animation: floatOrb infinite alternate cubic-bezier(0.45, 0.05, 0.55, 0.95); mix-blend-mode: multiply; }
+        .orb { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.7; animation: floatOrb infinite alternate cubic-bezier(0.45, 0.05, 0.55, 0.95); mix-blend-mode: multiply; will-change: transform; }
         .orb-1 { width: 600px; height: 600px; background: rgba(0, 212, 255, 0.25); top: -100px; left: -100px; animation-duration: 22s; }
         .orb-2 { width: 700px; height: 700px; background: rgba(138, 43, 226, 0.25); bottom: -150px; right: -150px; animation-duration: 28s; animation-delay: -5s; }
         .orb-3 { width: 500px; height: 500px; background: rgba(0, 85, 255, 0.2); top: 30%; left: 30%; animation-duration: 25s; animation-delay: -10s; }
         @keyframes floatOrb { 0% { transform: translate(0, 0) scale(1) rotate(0deg); } 100% { transform: translate(250px, 200px) scale(1.5) rotate(45deg); } }
         
-        .particle {
-            position: absolute; width: 4px; height: 4px; background: #fff; border-radius: 50%;
-            box-shadow: 0 0 10px #00d4ff, 0 0 20px #00d4ff; animation: twinkle float infinite linear;
-        }
+        .particle { position: absolute; width: 4px; height: 4px; background: #fff; border-radius: 50%; box-shadow: 0 0 10px #00d4ff, 0 0 20px #00d4ff; will-change: transform; }
 
         section { padding: 140px 0; position: relative; z-index: 5; }
 
@@ -89,19 +83,11 @@
         }
         @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        /* Fluid Typography for Sections */
         .section-title { font-size: clamp(2.8rem, 5vw, 4.5rem); font-weight: 900; margin-bottom: 4.5rem; text-align: center; position: relative; letter-spacing: -1.5px; text-shadow: 0 15px 40px rgba(0, 102, 255, 0.2); }
-        .section-title::after {
-            content: ''; width: 120px; height: 8px; background: linear-gradient(90deg, transparent, var(--accent), var(--accent-light), transparent);
-            position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%); border-radius: 10px; box-shadow: 0 0 30px var(--accent-glow); 
-        }
+        .section-title::after { content: ''; width: 120px; height: 8px; background: linear-gradient(90deg, transparent, var(--accent), var(--accent-light), transparent); position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%); border-radius: 10px; box-shadow: 0 0 30px var(--accent-glow); }
 
         /* ===== GLORIOUS NAVBAR ===== */
-        .navbar {
-            background-color: rgba(255, 255, 255, 0.5) !important;
-            backdrop-filter: blur(35px) saturate(250%); -webkit-backdrop-filter: blur(35px) saturate(250%);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.8); box-shadow: 0 15px 50px rgba(0, 102, 255, 0.08); padding: 20px 0; transition: all 0.5s ease;
-        }
+        .navbar { background-color: rgba(255, 255, 255, 0.5) !important; backdrop-filter: blur(35px) saturate(250%); -webkit-backdrop-filter: blur(35px) saturate(250%); border-bottom: 1px solid rgba(255, 255, 255, 0.8); box-shadow: 0 15px 50px rgba(0, 102, 255, 0.08); padding: 20px 0; transition: all 0.5s ease; }
         .navbar-brand { font-weight: 900; color: var(--text-main) !important; letter-spacing: 1px; font-size: 2.2rem; text-shadow: 0 10px 20px rgba(0,0,0,0.05); }
         .navbar-brand span { color: var(--accent); text-shadow: 0 0 25px var(--accent-glow); }
         .nav-link { color: var(--text-muted) !important; font-weight: 800; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); margin-left: 25px; text-transform: uppercase; font-size: 1rem; letter-spacing: 1.5px;}
@@ -118,12 +104,11 @@
         @keyframes glassSweepContinuous { 0% { left: -150%; } 100% { left: 200%; } }
 
         /* ===== MAJESTIC 3D HERO BOX ===== */
-        .parallax-wrapper { transition: transform 0.15s ease-out; transform-style: preserve-3d; transform: rotateX(var(--mouse-y)) rotateY(var(--mouse-x)); }
+        .parallax-wrapper { transition: transform 0.1s ease-out; transform-style: preserve-3d; transform: rotateX(var(--mouse-y)) rotateY(var(--mouse-x)); will-change: transform;}
         
         .hero-content-box {
             padding: clamp(40px, 5vw, 70px); border-radius: 35px;
-            /* Glass + SVG Noise for ultimate realism */
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.3)), var(--glass-noise);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.3)); /* Clean glass */
             backdrop-filter: blur(40px) saturate(220%); -webkit-backdrop-filter: blur(40px) saturate(220%);
             border: 1px solid rgba(255, 255, 255, 0.6); border-top: 3px solid rgba(255, 255, 255, 1); border-left: 3px solid rgba(255, 255, 255, 0.9);
             box-shadow: 0 40px 80px rgba(0, 102, 255, 0.15), inset 0 0 40px rgba(255, 255, 255, 1);
@@ -131,31 +116,20 @@
         }
         .hero-content-box > * { position: relative; z-index: 2; }
 
-        /* Majestic Aurora Border */
         .hero-content-box::before {
             content: ""; position: absolute; inset: 0; border-radius: 35px; padding: 5px; 
             background: linear-gradient(60deg, var(--accent-light), var(--accent), var(--accent-purple), #ff00c8, var(--accent-light));
-            background-size: 300% 300%; -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor; mask-composite: exclude; opacity: 0.9; animation: auroraShift 6s ease infinite; z-index: 3; pointer-events: none; transition: opacity 0.5s ease;
+            background-size: 300% 300%; -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; opacity: 0.9; animation: auroraShift 6s ease infinite; z-index: 3; pointer-events: none; transition: opacity 0.5s ease;
         }
         @keyframes auroraShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        .hero-content-box::after {
-            content: ""; position: absolute; top: 0; left: -150%; width: 50%; height: 100%;
-            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%);
-            transform: skewX(-25deg); animation: glassSweepContinuous 2.5s infinite linear; z-index: 0; pointer-events: none;
-        }
+        .hero-content-box::after { content: ""; position: absolute; top: 0; left: -150%; width: 50%; height: 100%; background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%); transform: skewX(-25deg); animation: glassSweepContinuous 2.5s infinite linear; z-index: 0; pointer-events: none; }
         
-        .hero-content-box:hover, .hero-content-box:active { 
-            box-shadow: 0 50px 100px rgba(0, 102, 255, 0.3), 0 0 60px rgba(0, 212, 255, 0.5), inset 0 0 50px rgba(255, 255, 255, 1); 
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.5)), var(--glass-noise); 
-        }
-        .hero-content-box:hover::before, .hero-content-box:active::before { opacity: 1; animation: auroraShift 3s ease infinite; }
+        .hero-content-box:hover { box-shadow: 0 50px 100px rgba(0, 102, 255, 0.3), 0 0 60px rgba(0, 212, 255, 0.5), inset 0 0 50px rgba(255, 255, 255, 1); background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.5)); }
+        .hero-content-box:hover::before { opacity: 1; animation: auroraShift 3s ease infinite; }
 
         .hero-subtitle { font-size: clamp(1.5rem, 3vw, 2.2rem); color: var(--text-main); font-weight: 900; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 3px; text-shadow: 0 5px 15px rgba(255,255,255,0.8);}
-        /* Fluid Massive Title */
         .hero-title { font-size: clamp(3rem, 7vw, 6.5rem); font-weight: 900; margin-bottom: 1rem; line-height: 1.05; letter-spacing: -3px; }
-        
         .typing-text { color: var(--text-muted); font-size: clamp(1.4rem, 3vw, 2.2rem); font-weight: 800; height: clamp(40px, 5vw, 60px); margin-bottom: 3.5rem; letter-spacing: 1px; }
         .typing-text::after { content: '|'; color: var(--accent); animation: blinkCursor 0.8s infinite; margin-left: 5px; text-shadow: 0 0 25px var(--accent); font-weight: 900; }
         @keyframes blinkCursor { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
@@ -169,17 +143,10 @@
         @keyframes scrollWheel { 0% { top: 10px; opacity: 1; } 100% { top: 30px; opacity: 0; } }
 
         /* ===== RADIANT PROFILE IMAGE ===== */
-        .profile-parallax { transition: transform 0.15s ease-out; transform-style: preserve-3d; transform: rotateX(var(--mouse-y)) rotateY(calc(var(--mouse-x) * -1)); }
+        .profile-parallax { transition: transform 0.15s ease-out; transform-style: preserve-3d; transform: rotateX(var(--mouse-y)) rotateY(calc(var(--mouse-x) * -1)); will-change: transform;}
         .profile-wrapper { position: relative; display: inline-block; transform: translateZ(70px); }
-        .profile-img {
-            width: clamp(280px, 35vw, 480px); height: clamp(280px, 35vw, 480px); aspect-ratio: 1 / 1; object-fit: cover; border-radius: 50%; border: 10px solid #fff;
-            background-color: #fff; position: relative; z-index: 2; animation: floatAndPulse 5s ease-in-out infinite;
-        }
-        @keyframes floatAndPulse {
-            0% { transform: translateY(0px); box-shadow: 0 0 50px var(--accent-glow), 0 0 0 0 rgba(0, 102, 255, 0.4); }
-            50% { transform: translateY(-35px); box-shadow: 0 60px 90px rgba(0, 102, 255, 0.3), 0 0 0 50px rgba(0, 102, 255, 0); }
-            100% { transform: translateY(0px); box-shadow: 0 0 50px var(--accent-glow), 0 0 0 0 rgba(0, 102, 255, 0); }
-        }
+        .profile-img { width: clamp(280px, 35vw, 480px); height: clamp(280px, 35vw, 480px); aspect-ratio: 1 / 1; object-fit: cover; border-radius: 50%; border: 10px solid #fff; background-color: #fff; position: relative; z-index: 2; animation: floatAndPulse 5s ease-in-out infinite; }
+        @keyframes floatAndPulse { 0% { transform: translateY(0px); box-shadow: 0 0 50px var(--accent-glow), 0 0 0 0 rgba(0, 102, 255, 0.4); } 50% { transform: translateY(-35px); box-shadow: 0 60px 90px rgba(0, 102, 255, 0.3), 0 0 0 50px rgba(0, 102, 255, 0); } 100% { transform: translateY(0px); box-shadow: 0 0 50px var(--accent-glow), 0 0 0 0 rgba(0, 102, 255, 0); } }
 
         /* ===== MAGNETIC LUXURY BUTTONS ===== */
         .btn-custom, .btn-outline-custom {
@@ -190,32 +157,26 @@
         }
         .btn-custom { background: linear-gradient(135deg, var(--accent), var(--accent-light), var(--accent-purple)); background-size: 200% auto; color: #fff !important; border: none; box-shadow: 0 20px 40px var(--accent-glow), inset 0 2px 5px rgba(255, 255, 255, 0.6); animation: btnGradient 4s ease infinite; }
         @keyframes btnGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        
         .btn-custom::after { content: ""; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%); transform: skewX(-25deg); animation: buttonShine 3s infinite; }
-        .btn-custom:hover, .btn-custom:active { transform: translateY(-12px) scale(1.08); box-shadow: 0 35px 60px rgba(0, 212, 255, 0.7), 0 0 40px rgba(138, 43, 226, 0.6), inset 0 2px 10px rgba(255, 255, 255, 1); }
-        
+        .btn-custom:hover { transform: translateY(-12px) scale(1.08); box-shadow: 0 35px 60px rgba(0, 212, 255, 0.7), 0 0 40px rgba(138, 43, 226, 0.6), inset 0 2px 10px rgba(255, 255, 255, 1); }
         .btn-outline-custom { border: 4px solid var(--accent); color: var(--accent) !important; background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(15px); box-shadow: 0 15px 30px rgba(0, 102, 255, 0.15); }
-        .btn-outline-custom:hover, .btn-outline-custom:active { background: linear-gradient(135deg, var(--accent), var(--accent-light)); color: #fff !important; border-color: transparent; transform: translateY(-12px) scale(1.08); box-shadow: 0 35px 60px var(--accent-glow), 0 0 40px rgba(0, 102, 255, 0.5); }
+        .btn-outline-custom:hover { background: linear-gradient(135deg, var(--accent), var(--accent-light)); color: #fff !important; border-color: transparent; transform: translateY(-12px) scale(1.08); box-shadow: 0 35px 60px var(--accent-glow), 0 0 40px rgba(0, 102, 255, 0.5); }
 
         .bg-alt { background-color: rgba(255,255,255,0.6); backdrop-filter: blur(25px); z-index: 5; position: relative;}
 
-        /* ===== DYNAMIC 3D TILT CARDS (WORKING ON MOBILE TOUCH TOO) ===== */
+        /* ===== DYNAMIC 3D TILT CARDS ===== */
         .tilt-card {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.4)), var(--glass-noise) !important;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.4)) !important; /* Clean glass */
             backdrop-filter: blur(40px) saturate(200%); -webkit-backdrop-filter: blur(40px) saturate(200%);
             border: 1px solid rgba(255, 255, 255, 0.4) !important; border-top-color: #ffffff !important; border-top-width: 3px !important; border-left-color: #ffffff !important; border-left-width: 3px !important;
             box-shadow: 0 25px 50px rgba(0, 102, 255, 0.12), inset 0 0 25px rgba(255, 255, 255, 1) !important;
             position: relative; z-index: 1; overflow: hidden; border-radius: 30px; cursor: pointer;
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease, background 0.4s ease !important;
-            transform-style: preserve-3d;
+            transform-style: preserve-3d; will-change: transform;
         }
         .tilt-card > * { position: relative; z-index: 10; transform: translateZ(40px); }
 
-        .tilt-card::after {
-            content: ""; position: absolute; top: 0; left: -150%; width: 50%; height: 100%;
-            background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0) 100%);
-            transform: skewX(-25deg); z-index: 2; pointer-events: none;
-        }
+        .tilt-card::after { content: ""; position: absolute; top: 0; left: -150%; width: 50%; height: 100%; background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0) 100%); transform: skewX(-25deg); z-index: 2; pointer-events: none; }
         .reveal.active .tilt-card::after { animation: glassSweepContinuous 3.5s infinite linear; }
 
         .tilt-card::before {
@@ -225,12 +186,8 @@
             opacity: 0.9; animation: auroraShift 5s ease infinite; transition: opacity 0.5s ease; z-index: 3; pointer-events: none;
         }
 
-        .tilt-card:hover, .tilt-card:active {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.6)), var(--glass-noise) !important;
-            box-shadow: 0 50px 100px rgba(0, 102, 255, 0.3), 0 0 60px rgba(0, 212, 255, 0.5), inset 0 0 50px rgba(255, 255, 255, 1) !important;
-            border-color: #fff !important; z-index: 20; 
-        }
-        .tilt-card:hover::before, .tilt-card:active::before { opacity: 1; animation: auroraShift 2s ease infinite; }
+        .tilt-card:hover { background: linear-gradient(135deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.6)) !important; box-shadow: 0 50px 100px rgba(0, 102, 255, 0.3), 0 0 60px rgba(0, 212, 255, 0.5), inset 0 0 50px rgba(255, 255, 255, 1) !important; border-color: #fff !important; z-index: 20; }
+        .tilt-card:hover::before { opacity: 1; animation: auroraShift 2s ease infinite; }
 
         .skill-box { padding: clamp(30px, 3vw, 50px) 25px; text-align: center; height: 100%; }
         .experience-card { padding: clamp(40px, 4vw, 60px); }
@@ -240,16 +197,14 @@
             position: absolute; top: 50%; right: 5%; transform: translateY(-50%) translateZ(50px); width: clamp(160px, 15vw, 260px); z-index: 10; object-fit: contain; border-radius: 20px;
             box-shadow: 0 20px 45px rgba(0,0,0,0.15); background: #fff; padding: 30px; transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .experience-card:hover .experience-logo, .experience-card:active .experience-logo { transform: translateY(-50%) translateZ(80px) scale(1.2) rotate(5deg); box-shadow: 0 35px 70px rgba(0, 102, 255, 0.4); }
+        .experience-card:hover .experience-logo { transform: translateY(-50%) translateZ(80px) scale(1.2) rotate(5deg); box-shadow: 0 35px 70px rgba(0, 102, 255, 0.4); }
 
         .experience-card-content { padding-right: clamp(0px, 30vw, 350px); }
-        @media(max-width: 768px) { .experience-card-content { padding-right: 0; } .experience-logo { position: relative; top: auto; right: auto; transform: translateZ(50px); margin-bottom: 30px; display: block; } .experience-card:hover .experience-logo, .experience-card:active .experience-logo { transform: translateZ(80px) scale(1.1); } }
-        
         .experience-card h4 { color: var(--text-main); font-weight: 900; font-size: clamp(1.8rem, 3vw, 2.5rem);}
         .experience-card p, .experience-card ul { color: var(--text-light) !important; font-size: clamp(1.05rem, 1.5vw, 1.25rem); font-weight: 600; line-height: 1.9;}
 
         .skill-icon { font-size: 4.5rem; color: var(--accent); margin-bottom: 35px; text-shadow: 0 0 30px var(--accent-glow); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .skill-box:hover .skill-icon, .skill-box:active .skill-icon { transform: scale(1.5) translateY(-15px); text-shadow: 0 0 50px rgba(0, 212, 255, 0.9); }
+        .skill-box:hover .skill-icon { transform: scale(1.5) translateY(-15px); text-shadow: 0 0 50px rgba(0, 212, 255, 0.9); }
         .skill-list { list-style: none; padding: 0; color: var(--text-muted); font-size: clamp(1.05rem, 1.2vw, 1.15rem); font-weight: 800;}
         .skill-list li { margin-bottom: 16px; }
         .skill-box h4 { color: var(--text-main); font-weight: 900; font-size: clamp(1.6rem, 2vw, 2rem); margin-bottom: 25px;}
@@ -261,36 +216,31 @@
         }
         .project-desc { color: var(--text-light); font-size: clamp(1rem, 1.2vw, 1.15rem); line-height: 1.9; margin-bottom: 30px; font-weight: 600;} 
         .project-hint { display: inline-block; margin-top: auto; color: var(--accent); font-size: 1.1rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; transition: all 0.4s; }
-        .project-card:hover .project-hint, .project-card:active .project-hint { text-shadow: 0 0 25px var(--accent-glow); transform: translateX(15px); color: var(--accent-purple); }
+        .project-card:hover .project-hint { text-shadow: 0 0 25px var(--accent-glow); transform: translateX(15px); color: var(--accent-purple); }
 
         /* ===== CONTACT ===== */
         .contact-item {
             display: flex; align-items: center; margin-bottom: 35px; padding: 35px; border-radius: 30px; background: rgba(255, 255, 255, 0.95); 
             border: 3px solid rgba(255,255,255,1); box-shadow: 0 20px 50px rgba(0, 102, 255, 0.1); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .contact-item:hover, .contact-item:active { transform: translateY(-12px) scale(1.04); box-shadow: 0 30px 60px var(--accent-glow); border-color: var(--accent); }
+        .contact-item:hover { transform: translateY(-12px) scale(1.04); box-shadow: 0 30px 60px var(--accent-glow); border-color: var(--accent); }
         .contact-icon {
             background: linear-gradient(135deg, var(--accent), var(--accent-purple)); color: white; width: 85px; height: 85px; display: flex; align-items: center; justify-content: center; border-radius: 50%;
             font-size: 2.2rem; margin-right: 35px; flex-shrink: 0; box-shadow: 0 15px 35px var(--accent-glow); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .contact-item:hover .contact-icon, .contact-item:active .contact-icon { transform: rotate(25deg) scale(1.2); box-shadow: 0 20px 45px rgba(138, 43, 226, 0.6); }
+        .contact-item:hover .contact-icon { transform: rotate(25deg) scale(1.2); box-shadow: 0 20px 45px rgba(138, 43, 226, 0.6); }
         .contact-text h5 { margin: 0 0 10px 0; font-size: 1.4rem; color: var(--text-main); font-weight: 900; text-transform: uppercase; letter-spacing: 1px;}
         .contact-text p, .contact-text a { margin: 0; color: var(--text-light); font-size: 1.2rem; text-decoration: none; word-break: break-all; font-weight: 700; }
         .contact-text a:hover { color: var(--accent); text-shadow: 0 0 15px var(--accent-glow); }
 
-        /* ===== 3D BOOK MODAL STYLES (ENHANCED FOR ALL DEVICES) ===== */
+        /* ===== 3D BOOK MODAL STYLES ===== */
         .book-modal-wrapper {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 9999; background: rgba(240, 244, 248, 0.9); backdrop-filter: blur(40px) saturate(250%);
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 9999; background: rgba(240, 244, 248, 0.9); backdrop-filter: blur(40px) saturate(250%); -webkit-backdrop-filter: blur(40px) saturate(250%);
             display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.6s ease; perspective: 3000px;
         }
         .book-modal-wrapper.active { opacity: 1; pointer-events: all; }
-
-        .book-close-btn {
-            position: absolute; top: clamp(20px, 4vw, 50px); right: clamp(20px, 4vw, 60px); background: #fff; border: none; width: clamp(50px, 5vw, 75px); height: clamp(50px, 5vw, 75px); border-radius: 50%;
-            color: var(--accent); font-size: clamp(1.8rem, 2vw, 2.5rem); cursor: pointer; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 10;
-            box-shadow: 0 20px 50px rgba(0, 102, 255, 0.25); display: flex; align-items: center; justify-content: center;
-        }
-        .book-close-btn:hover, .book-close-btn:active { background: linear-gradient(135deg, var(--accent), var(--accent-purple)); color: #fff; transform: scale(1.25) rotate(90deg); box-shadow: 0 30px 60px var(--accent-glow); }
+        .book-close-btn { position: absolute; top: clamp(20px, 4vw, 50px); right: clamp(20px, 4vw, 60px); background: #fff; border: none; width: clamp(50px, 5vw, 75px); height: clamp(50px, 5vw, 75px); border-radius: 50%; color: var(--accent); font-size: clamp(1.8rem, 2vw, 2.5rem); cursor: pointer; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 10; box-shadow: 0 20px 50px rgba(0, 102, 255, 0.25); display: flex; align-items: center; justify-content: center; }
+        .book-close-btn:hover { background: linear-gradient(135deg, var(--accent), var(--accent-purple)); color: #fff; transform: scale(1.25) rotate(90deg); box-shadow: 0 30px 60px var(--accent-glow); }
 
         .book-core { width: 55vw; height: 85vh; max-width: 1100px; min-width: 700px; position: relative; transform-style: preserve-3d; will-change: transform; transition: transform 0.9s cubic-bezier(0.25, 0.8, 0.25, 1); }
         .book-cover { position: absolute; width: 100%; height: 100%; transform-origin: left center; transform-style: preserve-3d; z-index: 2; will-change: transform; transition: transform 0.9s cubic-bezier(0.25, 0.8, 0.25, 1); }
@@ -303,8 +253,7 @@
             box-shadow: inset 80px 0 120px rgba(0,0,0,0.05), 25px 25px 70px rgba(0, 102, 255, 0.2); 
             padding: clamp(40px, 5vw, 80px); overflow-y: auto; border: 1px solid rgba(0,0,0,0.05); border-left: none;
         }
-        .book-page-right::-webkit-scrollbar { width: 10px; } .book-page-right::-webkit-scrollbar-track { background: rgba(0,0,0,0.03); border-radius: 10px;}
-        .book-page-right::-webkit-scrollbar-thumb { background: linear-gradient(var(--accent), var(--accent-purple)); border-radius: 10px; }
+        .book-page-right::-webkit-scrollbar { width: 10px; } .book-page-right::-webkit-scrollbar-track { background: rgba(0,0,0,0.03); border-radius: 10px;} .book-page-right::-webkit-scrollbar-thumb { background: linear-gradient(var(--accent), var(--accent-purple)); border-radius: 10px; }
 
         .cover-front, .cover-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 30px 0 0 30px; border: 3px solid rgba(255,255,255,0.3); }
         .cover-front { background: linear-gradient(135deg, var(--accent), var(--accent-purple)); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: clamp(40px, 5vw, 80px); box-shadow: 0 40px 90px var(--accent-glow), inset 0 0 60px rgba(255,255,255,0.4); }
@@ -313,21 +262,10 @@
         .resp-list { padding-left: 20px; color: var(--text-light); font-size: clamp(1.05rem, 1.5vw, 1.25rem); line-height: 2.1; margin-top: 35px; font-weight: 600;}
         .resp-list li { margin-bottom: 25px; }
 
-        /* ===== MOBILE BOOK FLIP LOGIC ===== */
-        @media (max-width: 991px) {
-            .book-core { width: 90vw; height: 70vh; min-width: 0; } .book-cover { transform-origin: top center; }
-            /* Instead of sliding right, it slides down and opens upward on mobile */
-            .book-modal-wrapper.active .book-core.open { transform: translateY(35vh) scale(1.02) rotateX(10deg); }
-            .book-modal-wrapper.active .book-core.open .book-cover { transform: rotateX(180deg); }
-            .cover-back { transform: rotateX(180deg); } .book-page-right { border-radius: 0 0 30px 30px; box-shadow: inset 0 60px 100px rgba(0,0,0,0.05); border-left: 1px solid rgba(0,0,0,0.05); border-top: none; }
-            .cover-front, .cover-back { border-radius: 30px 30px 0 0; } .cover-back { box-shadow: inset 0 -60px 100px rgba(0,0,0,0.05); }
-        }
-
-        /* ===== CONTINUOUS CINEMATIC BLUR REVEALS ===== */
-        /* Removes opacity and resets transform immediately when class is lost, applies slow transition ONLY when added */
-        .reveal { opacity: 0; transform: translateY(150px) scale(0.85); filter: blur(30px); transition: none; /* No transition on exit so it instantly resets */ }
+        /* ===== CONTINUOUS CINEMATIC REVEALS (Intersection Observer powers this) ===== */
+        .reveal { opacity: 0; transform: translateY(120px) scale(0.9); filter: blur(15px); transition: none; /* Instant reset */ will-change: opacity, transform, filter; }
         .reveal.active { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); transition: all 1.2s cubic-bezier(0.2, 0.8, 0.2, 1); }
-        .reveal.active.delay-1 { transition-delay: 0.15s; } .reveal.active.delay-2 { transition-delay: 0.3s; } .reveal.active.delay-3 { transition-delay: 0.45s; } .reveal.active.delay-4 { transition-delay: 0.6s; }
+        .reveal.active.delay-1 { transition-delay: 0.1s; } .reveal.active.delay-2 { transition-delay: 0.25s; } .reveal.active.delay-3 { transition-delay: 0.4s; } .reveal.active.delay-4 { transition-delay: 0.55s; }
 
         /* ===== AUDIO TOGGLE BUTTON ===== */
         .audio-toggle {
@@ -335,8 +273,47 @@
             width: clamp(65px, 6vw, 85px); height: clamp(65px, 6vw, 85px); border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 1000; box-shadow: 0 20px 50px var(--accent-glow);
             transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); font-size: clamp(1.4rem, 2vw, 1.8rem); border: 4px solid #fff;
         }
-        .audio-toggle:hover, .audio-toggle:active { transform: scale(1.2) rotate(20deg); box-shadow: 0 25px 60px rgba(138, 43, 226, 0.8); }
+        .audio-toggle:hover { transform: scale(1.2) rotate(20deg); box-shadow: 0 25px 60px rgba(138, 43, 226, 0.8); }
 
+        /* ============================================================== */
+        /* ===== SUPER OPTIMIZED MOBILE MODE (FIXES SCROLL & LAG) ======= */
+        /* ============================================================== */
+        @media (max-width: 991px) {
+            body { cursor: auto; }
+            .cursor-dot, .cursor-outline { display: none !important; }
+            .particle { display: none !important; }
+
+            /* Simplify reveals for mobile GPU */
+            .reveal { filter: none !important; transform: translateY(60px) scale(0.98); }
+            .reveal.active { filter: none !important; transform: translateY(0) scale(1); }
+
+            /* Reduce backdrop filter */
+            .hero-content-box, .tilt-card, .navbar { backdrop-filter: blur(15px) saturate(150%) !important; -webkit-backdrop-filter: blur(15px) saturate(150%) !important; }
+
+            /* Disable 3D tilt tracking */
+            .parallax-wrapper, .profile-parallax, .tilt-card { transform: none !important; transition: transform 0.4s ease !important; will-change: auto; }
+            .tilt-card:hover { transform: translateY(-8px) !important; }
+
+            /* Layout Fixes */
+            .hero-title { font-size: 4rem; } .hero { text-align: center; } .hero .d-flex { justify-content: center; }
+            .scroll-indicator { display: none; }
+            
+            /* Book Modal Fixes */
+            .book-core { width: 90vw; height: 70vh; min-width: 0; } .book-cover { transform-origin: top center; }
+            .book-modal-wrapper.active .book-core.open { transform: translateY(35vh) scale(1.02) rotateX(10deg); }
+            .book-modal-wrapper.active .book-core.open .book-cover { transform: rotateX(180deg); }
+            .cover-back { transform: rotateX(180deg); } .book-page-right { border-radius: 0 0 30px 30px; box-shadow: inset 0 60px 100px rgba(0,0,0,0.05); border-left: 1px solid rgba(0,0,0,0.05); border-top: none; }
+            .cover-front, .cover-back { border-radius: 30px 30px 0 0; } .cover-back { box-shadow: inset 0 -60px 100px rgba(0,0,0,0.05); }
+        }
+        
+        @media (max-width: 768px) {
+            section { padding: 90px 0; } .section-title { font-size: 2.8rem; margin-bottom: 3rem; }
+            .hero-content-box { padding: 30px; } .hero-subtitle { font-size: 1.4rem; } .hero-title { font-size: 3rem; }
+            .typing-text { font-size: 1.2rem; margin-bottom: 2rem; height: 35px; } .btn-custom, .btn-outline-custom { padding: 12px 30px; font-size: 1rem; margin-right: 5px; }
+            .profile-img { width: 280px; height: 280px; margin-top: 40px; } .experience-card { padding: 30px; } .experience-card-content { padding-right: 0; } 
+            .experience-logo { position: relative; top: auto; right: auto; transform: none; width: 180px; margin-bottom: 30px; display: block; box-shadow: 0 10px 25px rgba(0,0,0,0.1);}
+            .book-page-right, .cover-back { padding: 30px; } .book-close-btn { top: 20px; right: 20px; width: 45px; height: 45px; font-size: 1.4rem;}
+        }
     </style>
 </head>
 <body data-bs-spy="scroll" data-bs-target=".navbar" data-bs-offset="90">
@@ -346,11 +323,11 @@
     <div class="cursor-outline" id="cursorOutline"></div>
 
     <!-- Ambient Floating Orbs -->
-    <div class="orb-container">
+    <div class="orb-container" id="orbContainer">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
         <div class="orb orb-3"></div>
-        <!-- JS will inject particles here -->
+        <!-- JS will inject particles here on desktop -->
     </div>
 
     <!-- Audio Element -->
@@ -364,7 +341,7 @@
         <div class="container">
             <a class="navbar-brand custom-hover" href="#home">Sunil<span class="text-gradient">.</span></a>
             <button class="navbar-toggler custom-hover" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <i class="fas fa-bars" style="color: var(--accent); font-size: 1.8rem;"></i>
+                <i class="fas fa-bars" style="color: var(--accent); font-size: 1.3rem;"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto text-center text-lg-start mt-3 mt-lg-0">
@@ -601,97 +578,65 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // --- ADD GLOWING PARTICLES TO BACKGROUND ---
-        const orbContainer = document.querySelector('.orb-container');
-        for(let i=0; i<30; i++) {
-            let particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = Math.random() * 100 + 'vw';
-            particle.style.top = Math.random() * 100 + 'vh';
-            particle.style.animationDuration = (Math.random() * 10 + 5) + 's';
-            particle.style.animationDelay = (Math.random() * 5) + 's';
-            particle.style.opacity = Math.random();
-            orbContainer.appendChild(particle);
+        // Check if device is desktop
+        const isDesktop = window.innerWidth > 991;
+
+        // --- OPTIMIZED PARTICLES (DESKTOP ONLY) ---
+        if (isDesktop) {
+            const orbContainer = document.getElementById('orbContainer');
+            for(let i=0; i<30; i++) {
+                let particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.top = Math.random() * 100 + 'vh';
+                particle.style.animationDuration = (Math.random() * 10 + 5) + 's';
+                particle.style.animationDelay = (Math.random() * 5) + 's';
+                particle.style.opacity = Math.random();
+                orbContainer.appendChild(particle);
+            }
         }
 
-        // --- GLORIOUS CUSTOM CURSOR (MOUSE + TOUCH) ---
-        const cursorDot = document.getElementById('cursorDot');
-        const cursorOutline = document.getElementById('cursorOutline');
-        let isTouch = false;
-
-        function updateCursor(x, y) {
-            cursorDot.style.left = `${x}px`; cursorDot.style.top = `${y}px`;
-            cursorOutline.animate({ left: `${x}px`, top: `${y}px` }, { duration: 400, fill: "forwards" });
-        }
-
-        // Mouse Events
-        window.addEventListener('mousemove', (e) => {
-            if(!isTouch) { updateCursor(e.clientX, e.clientY); cursorDot.classList.add('active'); cursorOutline.classList.add('active'); }
-        });
-
-        // Touch Events for Mobile Cursor Aura
-        window.addEventListener('touchstart', (e) => {
-            isTouch = true;
-            const touch = e.touches[0]; updateCursor(touch.clientX, touch.clientY);
-            cursorDot.classList.add('active'); cursorOutline.classList.add('active');
-        }, {passive: true});
-        window.addEventListener('touchmove', (e) => {
-            const touch = e.touches[0]; updateCursor(touch.clientX, touch.clientY);
-        }, {passive: true});
-        window.addEventListener('touchend', () => {
-            cursorDot.classList.remove('active'); cursorOutline.classList.remove('active');
-            // reset 3D parallax on touch end
-            document.documentElement.style.setProperty('--mouse-x', `0deg`);
-            document.documentElement.style.setProperty('--mouse-y', `0deg`);
-            document.querySelectorAll('.tilt-card').forEach(c => c.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`);
-        });
-
-        // Magnetic Hover Effect
-        document.querySelectorAll('.custom-hover').forEach(el => {
-            el.addEventListener('mouseenter', () => { cursorOutline.style.width = '80px'; cursorOutline.style.height = '80px'; cursorOutline.style.background = 'rgba(0, 102, 255, 0.15)'; });
-            el.addEventListener('mouseleave', () => { cursorOutline.style.width = '50px'; cursorOutline.style.height = '50px'; cursorOutline.style.background = 'transparent'; });
-            // Touch trigger for magnetic effect
-            el.addEventListener('touchstart', () => { cursorOutline.style.width = '80px'; cursorOutline.style.height = '80px'; cursorOutline.style.background = 'rgba(138, 43, 226, 0.2)'; }, {passive:true});
-            el.addEventListener('touchend', () => { cursorOutline.style.width = '50px'; cursorOutline.style.height = '50px'; cursorOutline.style.background = 'transparent'; });
-        });
-
-        // --- 3D INTERACTIVE TILT (MOUSE & TOUCH) ---
-        function handleTilt(e, card) {
-            const rect = card.getBoundingClientRect();
-            const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-            const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+        // --- OPTIMIZED CUSTOM CURSOR (DESKTOP ONLY) ---
+        if (isDesktop) {
+            const cursorDot = document.getElementById('cursorDot');
+            const cursorOutline = document.getElementById('cursorOutline');
             
-            const x = clientX - rect.left;
-            const y = clientY - rect.top;
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            
-            const rotateX = ((y - centerY) / centerY) * -15;
-            const rotateY = ((x - centerX) / centerX) * 15;
-            
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+            window.addEventListener('mousemove', (e) => {
+                cursorDot.style.left = `${e.clientX}px`; cursorDot.style.top = `${e.clientY}px`;
+                cursorOutline.animate({ left: `${e.clientX}px`, top: `${e.clientY}px` }, { duration: 400, fill: "forwards" });
+            });
+
+            document.querySelectorAll('.custom-hover').forEach(el => {
+                el.addEventListener('mouseenter', () => { cursorOutline.style.width = '80px'; cursorOutline.style.height = '80px'; cursorOutline.style.background = 'rgba(0, 102, 255, 0.15)'; });
+                el.addEventListener('mouseleave', () => { cursorOutline.style.width = '50px'; cursorOutline.style.height = '50px'; cursorOutline.style.background = 'transparent'; });
+            });
         }
 
-        document.querySelectorAll('.tilt-card').forEach(card => {
-            // Mouse
-            card.addEventListener('mousemove', (e) => handleTilt(e, card));
-            card.addEventListener('mouseleave', () => { card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`; });
-            // Touch
-            card.addEventListener('touchmove', (e) => { handleTilt(e, card); }, {passive: true});
-        });
+        // --- OPTIMIZED 3D TILT (DESKTOP ONLY) ---
+        if (isDesktop) {
+            function handleTilt(e, card) {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const rotateX = ((y - (rect.height / 2)) / (rect.height / 2)) * -15;
+                const rotateY = ((x - (rect.width / 2)) / (rect.width / 2)) * 15;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+            }
 
-        // --- HERO 3D PARALLAX (MOUSE & TOUCH) ---
-        function handleHeroParallax(clientX, clientY) {
-            const x = (clientX / window.innerWidth - 0.5) * 30; // Max 15 deg tilt
-            const y = (clientY / window.innerHeight - 0.5) * 30;
-            document.documentElement.style.setProperty('--mouse-x', `${x}deg`);
-            document.documentElement.style.setProperty('--mouse-y', `${-y}deg`);
+            document.querySelectorAll('.tilt-card').forEach(card => {
+                card.addEventListener('mousemove', (e) => handleTilt(e, card));
+                card.addEventListener('mouseleave', () => { card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`; });
+            });
+
+            // HERO 3D PARALLAX
+            const heroSection = document.getElementById('home');
+            heroSection.addEventListener('mousemove', (e) => {
+                const x = (e.clientX / window.innerWidth - 0.5) * 30;
+                const y = (e.clientY / window.innerHeight - 0.5) * 30;
+                document.documentElement.style.setProperty('--mouse-x', `${x}deg`);
+                document.documentElement.style.setProperty('--mouse-y', `${-y}deg`);
+            });
         }
-        
-        const heroSection = document.getElementById('home');
-        heroSection.addEventListener('mousemove', (e) => { if(!isTouch) handleHeroParallax(e.clientX, e.clientY); });
-        heroSection.addEventListener('touchmove', (e) => { handleHeroParallax(e.touches[0].clientX, e.touches[0].clientY); }, {passive: true});
-
 
         // --- DATA FOR BOOK MODAL ---
         const projectData = {
@@ -795,7 +740,7 @@
                 }).catch(err => { console.log("Waiting for interaction..."); });
             }
         }
-        window.addEventListener('scroll', playAudioOnce);
+        window.addEventListener('scroll', playAudioOnce, {passive: true});
         document.addEventListener('click', playAudioOnce);
         document.addEventListener('touchstart', playAudioOnce, {passive: true});
 
@@ -825,24 +770,25 @@
         }
         document.addEventListener("DOMContentLoaded", () => setTimeout(type, 1000));
 
-        // --- CONTINUOUS EVERY-TIME SCROLL REVEAL (THE FIX) ---
-        function reveal() {
-            var reveals = document.querySelectorAll(".reveal");
-            for (var i = 0; i < reveals.length; i++) {
-                var windowHeight = window.innerHeight;
-                var elementTop = reveals[i].getBoundingClientRect().top;
-                var elementBottom = reveals[i].getBoundingClientRect().bottom;
+        // --- HIGH PERFORMANCE CONTINUOUS REVEAL (INTERSECTION OBSERVER) ---
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15 // Triggers when 15% of the element is visible
+        };
 
-                // If element is inside the viewport
-                if (elementTop < windowHeight - 100 && elementBottom > 0) {
-                    reveals[i].classList.add("active");
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
                 } else {
-                    // If element goes out of view, remove 'active' to reset it instantly for the next time
-                    reveals[i].classList.remove("active");
+                    entry.target.classList.remove('active'); // Removes instantly so it can animate again when scrolled back
                 }
-            }
-        }
-        window.addEventListener("scroll", reveal); reveal(); 
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
     </script>
 </body>
 </html>
