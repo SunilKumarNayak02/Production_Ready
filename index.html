@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunil Kumar Nayak | Portfolio</title>
+    
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ===== ROOT VARIABLES (GLORIOUS AURORA MODE) ===== */
+        :root {
+            --bg-main: #f4f7f9; 
+            --bg-alt: #edf1f6; 
+            --text-main: #060b19; 
+            --text-muted: #334155;
+            --text-light: #475569;
+            --accent: #0055ff; 
+            --accent-light: #00d4ff;
+            --accent-purple: #8a2be2;
+            --accent-glow: rgba(0, 85, 255, 0.6);
+            /* SVG Noise for Real Glassmorphism */
+            --glass-noise: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.06'/%3E%3C/svg%3E");
+            
+            /* Dynamic variables for 3D parallax set by JS */
+            --mouse-x: 0deg;
+            --mouse-y: 0deg;
+        }
+
+        /* ===== GLOBAL STYLES ===== */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            cursor: none; /* Hide default cursor */
+            background-image: radial-gradient(circle at 10% 40%, rgba(0, 212, 255, 0.08), transparent 40%),
+                              radial-gradient(circle at 90% 60%, rgba(138, 43, 226, 0.06), transparent 40%);
+        }
+        
+        /* ===== TOUCH-REACTIVE RADIANT CURSOR ===== */
+        .cursor-dot {
+            position: fixed; top: 0; left: 0; width: 10px; height: 10px; background: var(--accent-light);
+            border-radius: 50%; transform: translate(-50%, -50%); z-index: 999999; pointer-events: none;
+            box-shadow: 0 0 20px var(--accent-light), 0 0 40px var(--accent);
+            transition: opacity 0.3s;
+        }
+        .cursor-outline {
+            position: fixed; top: 0; left: 0; width: 50px; height: 50px;
+            border: 2px solid rgba(0, 212, 255, 0.6); border-radius: 50%; transform: translate(-50%, -50%);
+            z-index: 999998; pointer-events: none; transition: width 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), height 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.3s, opacity 0.3s;
+            backdrop-filter: blur(2px); box-shadow: inset 0 0 15px rgba(0, 212, 255, 0.2);
+        }
+
+        /* Mobile specific cursor logic: Hidden until touched */
+        @media (max-width: 991px) {
+            .cursor-dot, .cursor-outline { opacity: 0; }
+            .cursor-dot.active, .cursor-outline.active { opacity: 1; }
+        }
+
+        /* ===== AMBIENT FLOATING ORBS & PARTICLES ===== */
+        .orb-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none; overflow: hidden; }
+        .orb { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.7; animation: floatOrb infinite alternate cubic-bezier(0.45, 0.05, 0.55, 0.95); mix-blend-mode: multiply; }
+        .orb-1 { width: 600px; height: 600px; background: rgba(0, 212, 255, 0.25); top: -100px; left: -100px; animation-duration: 22s; }
+        .orb-2 { width: 700px; height: 700px; background: rgba(138, 43, 226, 0.25); bottom: -150px; right: -150px; animation-duration: 28s; animation-delay: -5s; }
+        .orb-3 { width: 500px; height: 500px; background: rgba(0, 85, 255, 0.2); top: 30%; left: 30%; animation-duration: 25s; animation-delay: -10s; }
+        @keyframes floatOrb { 0% { transform: translate(0, 0) scale(1) rotate(0deg); } 100% { transform: translate(250px, 200px) scale(1.5) rotate(45deg); } }
+        
+        .particle {
+            position: absolute; width: 4px; height: 4px; background: #fff; border-radius: 50%;
+            box-shadow: 0 0 10px #00d4ff, 0 0 20px #00d4ff; animation: twinkle float infinite linear;
+        }
+
+        section { padding: 140px 0; position: relative; z-index: 5; }
+
+        /* ===== MASSIVE GRADIENT TEXT ===== */
+        .text-gradient {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 50%, var(--accent-purple) 100%);
+            background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: gradientShift 6s ease infinite; display: inline-block;
+        }
+        @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+        /* Fluid Typography for Sections */
+        .section-title { font-size: clamp(2.8rem, 5vw, 4.5rem); font-weight: 900; margin-bottom: 4.5rem; text-align: center; position: relative; letter-spacing: -1.5px; text-shadow: 0 15px 40px rgba(0, 102, 255, 0.2); }
+        .section-title::after {
+            content: ''; width: 120px; height: 8px; background: linear-gradient(90deg, transparent, var(--accent), var(--accent-light), transparent);
+            position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%); border-radius: 10px; box-shadow: 0 0 30px var(--accent-glow); 
+        }
+
+        /* ===== GLORIOUS NAVBAR ===== */
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.5) !important;
+            backdrop-filter: blur(35px) saturate(250%); -webkit-backdrop-filter: blur(35px) saturate(250%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.8); box-shadow: 0 15px 50px rgba(0, 102, 255, 0.08); padding: 20px 0; transition: all 0.5s ease;
+        }
+        .navbar-brand { font-weight: 900; color: var(--text-main) !important; letter-spacing: 1px; font-size: 2.2rem; text-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .navbar-brand span { color: var(--accent); text-shadow: 0 0 25px var(--accent-glow); }
+        .nav-link { color: var(--text-muted) !important; font-weight: 800; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); margin-left: 25px; text-transform: uppercase; font-size: 1rem; letter-spacing: 1.5px;}
+        .nav-link:hover, .nav-link.active { color: var(--accent) !important; text-shadow: 0 0 20px var(--accent-glow); transform: translateY(-4px) scale(1.1); }
+        .navbar-toggler { border: none; outline: none; box-shadow: none !important; }
+        .navbar-toggler-icon { filter: drop-shadow(0 0 5px rgba(0,102,255,0.5)); }
+
+        /* ===== HERO SECTION ===== */
+        .hero { min-height: 100vh; display: flex; align-items: center; position: relative; padding-top: 80px; overflow: hidden; background: transparent; }
+        .video-background-wrapper { position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+        .video-background { width: 100%; height: 100%; object-fit: cover; opacity: 0.25; mix-blend-mode: overlay; filter: contrast(140%) saturate(130%); }
+        .hero .container { position: relative; z-index: 2; perspective: 1500px; }
+
+        @keyframes glassSweepContinuous { 0% { left: -150%; } 100% { left: 200%; } }
+
+        /* ===== MAJESTIC 3D HERO BOX ===== */
+        .parallax-wrapper { transition: transform 0.15s ease-out; transform-style: preserve-3d; transform: rotateX(var(--mouse-y)) rotateY(var(--mouse-x)); }
+        
+        .hero-content-box {
+            padding: clamp(40px, 5vw, 70px); border-radius: 35px;
+            /* Glass + SVG Noise for ultimate realism */
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.3)), var(--glass-noise);
+            backdrop-filter: blur(40px) saturate(220%); -webkit-backdrop-filter: blur(40px) saturate(220%);
+            border: 1px solid rgba(255, 255, 255, 0.6); border-top: 3px solid rgba(255, 255, 255, 1); border-left: 3px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 40px 80px rgba(0, 102, 255, 0.15), inset 0 0 40px rgba(255, 255, 255, 1);
+            position: relative; z-index: 1; overflow: hidden; transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform: translateZ(50px);
+        }
+        .hero-content-box > * { position: relative; z-index: 2; }
+
+        /* Majestic Aurora Border */
+        .hero-content-box::before {
+            content: ""; position: absolute; inset: 0; border-radius: 35px; padding: 5px; 
+            background: linear-gradient(60deg, var(--accent-light), var(--accent), var(--accent-purple), #ff00c8, var(--accent-light));
+            background-size: 300% 300%; -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor; mask-composite: exclude; opacity: 0.9; animation: auroraShift 6s ease infinite; z-index: 3; pointer-events: none; transition: opacity 0.5s ease;
+        }
+        @keyframes auroraShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+        .hero-content-box::after {
+            content: ""; position: absolute; top: 0; left: -150%; width: 50%; height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-25deg); animation: glassSweepContinuous 2.5s infinite linear; z-index: 0; pointer-events: none;
+        }
+        
+        .hero-content-box:hover, .hero-content-box:active { 
+            box-shadow: 0 50px 100px rgba(0, 102, 255, 0.3), 0 0 60px rgba(0, 212, 255, 0.5), inset 0 0 50px rgba(255, 255, 255, 1); 
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.5)), var(--glass-noise); 
+        }
+        .hero-content-box:hover::before, .hero-content-box:active::before { opacity: 1; animation: auroraShift 3s ease infinite; }
+
+        .hero-subtitle { font-size: clamp(1.5rem, 3vw, 2.2rem); color: var(--text-main); font-weight: 900; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 3px; text-shadow: 0 5px 15px rgba(255,255,255,0.8);}
+        /* Fluid Massive Title */
+        .hero-title { font-size: clamp(3rem, 7vw, 6.5rem); font-weight: 900; margin-bottom: 1rem; line-height: 1.05; letter-spacing: -3px; }
+        
+        .typing-text { color: var(--text-muted); font-size: clamp(1.4rem, 3vw, 2.2rem); font-weight: 800; height: clamp(40px, 5vw, 60px); margin-bottom: 3.5rem; letter-spacing: 1px; }
+        .typing-text::after { content: '|'; color: var(--accent); animation: blinkCursor 0.8s infinite; margin-left: 5px; text-shadow: 0 0 25px var(--accent); font-weight: 900; }
+        @keyframes blinkCursor { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        
+        /* ===== SCROLL INDICATOR ===== */
+        .scroll-indicator { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; z-index: 10; pointer-events: none; opacity: 0.8; animation: bounce 2.5s infinite cubic-bezier(0.45, 0.05, 0.55, 0.95); }
+        .mouse { width: 35px; height: 55px; border: 3px solid var(--text-main); border-radius: 25px; position: relative; margin-bottom: 12px; background: rgba(255,255,255,0.3); backdrop-filter: blur(5px);}
+        .mouse::before { content: ''; width: 6px; height: 12px; background: var(--accent); position: absolute; top: 10px; left: 50%; transform: translateX(-50%); border-radius: 3px; animation: scrollWheel 2s infinite; box-shadow: 0 0 15px var(--accent-glow); }
+        .scroll-indicator p { font-size: 0.9rem; font-weight: 900; text-transform: uppercase; letter-spacing: 3px; color: var(--text-main); margin: 0; text-shadow: 0 5px 10px rgba(255,255,255,0.8);}
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); } 40% { transform: translateY(-20px) translateX(-50%); } 60% { transform: translateY(-10px) translateX(-50%); } }
+        @keyframes scrollWheel { 0% { top: 10px; opacity: 1; } 100% { top: 30px; opacity: 0; } }
+
+        /* ===== RADIANT PROFILE IMAGE ===== */
+        .profile-parallax { transition: transform 0.15s ease-out; transform-style: preserve-3d; transform: rotateX(var(--mouse-y)) rotateY(calc(var(--mouse-x) * -1)); }
+        .profile-wrapper { position: relative; display: inline-block; transform: translateZ(70px); }
+        .profile-img {
+            width: clamp(280px, 35vw, 480px); height: clamp(280px, 35vw, 480px); aspect-ratio: 1 / 1; object-fit: cover; border-radius: 50%; border: 10px solid #fff;
+            background-color: #fff; position: relative; z-index: 2; animation: floatAndPulse 5s ease-in-out infinite;
+        }
+        @keyframes floatAndPulse {
+            0% { transform: translateY(0px); box-shadow: 0 0 50px var(--accent-glow), 0 0 0 0 rgba(0, 102, 255, 0.4); }
+            50% { transform: translateY(-35px); box-shadow: 0 60px 90px rgba(0, 102, 255, 0.3), 0 0 0 50px rgba(0, 102, 255, 0); }
+            100% { transform: translateY(0px); box-shadow: 0 0 50px var(--accent-glow), 0 0 0 0 rgba(0, 102, 255, 0); }
+        }
+
+        /* ===== MAGNETIC LUXURY BUTTONS ===== */
+        .btn-custom, .btn-outline-custom {
+            padding: clamp(15px, 2vw, 20px) clamp(35px, 4vw, 55px); border-radius: 50px; font-weight: 900; letter-spacing: 2px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            text-decoration: none; display: inline-block; margin-bottom: 15px; margin-right: 20px; font-size: clamp(1rem, 1.5vw, 1.2rem);
+            text-transform: uppercase; position: relative; overflow: hidden;
+        }
+        .btn-custom { background: linear-gradient(135deg, var(--accent), var(--accent-light), var(--accent-purple)); background-size: 200% auto; color: #fff !important; border: none; box-shadow: 0 20px 40px var(--accent-glow), inset 0 2px 5px rgba(255, 255, 255, 0.6); animation: btnGradient 4s ease infinite; }
+        @keyframes btnGradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        
+        .btn-custom::after { content: ""; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%); transform: skewX(-25deg); animation: buttonShine 3s infinite; }
+        .btn-custom:hover, .btn-custom:active { transform: translateY(-12px) scale(1.08); box-shadow: 0 35px 60px rgba(0, 212, 255, 0.7), 0 0 40px rgba(138, 43, 226, 0.6), inset 0 2px 10px rgba(255, 255, 255, 1); }
+        
+        .btn-outline-custom { border: 4px solid var(--accent); color: var(--accent) !important; background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(15px); box-shadow: 0 15px 30px rgba(0, 102, 255, 0.15); }
+        .btn-outline-custom:hover, .btn-outline-custom:active { background: linear-gradient(135deg, var(--accent), var(--accent-light)); color: #fff !important; border-color: transparent; transform: translateY(-12px) scale(1.08); box-shadow: 0 35px 60px var(--accent-glow), 0 0 40px rgba(0, 102, 255, 0.5); }
+
+        .bg-alt { background-color: rgba(255,255,255,0.6); backdrop-filter: blur(25px); z-index: 5; position: relative;}
+
+        /* ===== DYNAMIC 3D TILT CARDS (WORKING ON MOBILE TOUCH TOO) ===== */
+        .tilt-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.4)), var(--glass-noise) !important;
+            backdrop-filter: blur(40px) saturate(200%); -webkit-backdrop-filter: blur(40px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.4) !important; border-top-color: #ffffff !important; border-top-width: 3px !important; border-left-color: #ffffff !important; border-left-width: 3px !important;
+            box-shadow: 0 25px 50px rgba(0, 102, 255, 0.12), inset 0 0 25px rgba(255, 255, 255, 1) !important;
+            position: relative; z-index: 1; overflow: hidden; border-radius: 30px; cursor: pointer;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease, background 0.4s ease !important;
+            transform-style: preserve-3d;
+        }
+        .tilt-card > * { position: relative; z-index: 10; transform: translateZ(40px); }
+
+        .tilt-card::after {
+            content: ""; position: absolute; top: 0; left: -150%; width: 50%; height: 100%;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0) 100%);
+            transform: skewX(-25deg); z-index: 2; pointer-events: none;
+        }
+        .reveal.active .tilt-card::after { animation: glassSweepContinuous 3.5s infinite linear; }
+
+        .tilt-card::before {
+            content: ""; position: absolute; inset: 0; border-radius: 30px; padding: 5px; 
+            background: linear-gradient(60deg, var(--accent-light), var(--accent), var(--accent-purple), #ff00c8, var(--accent-light));
+            background-size: 300% 300%; -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+            opacity: 0.9; animation: auroraShift 5s ease infinite; transition: opacity 0.5s ease; z-index: 3; pointer-events: none;
+        }
+
+        .tilt-card:hover, .tilt-card:active {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.6)), var(--glass-noise) !important;
+            box-shadow: 0 50px 100px rgba(0, 102, 255, 0.3), 0 0 60px rgba(0, 212, 255, 0.5), inset 0 0 50px rgba(255, 255, 255, 1) !important;
+            border-color: #fff !important; z-index: 20; 
+        }
+        .tilt-card:hover::before, .tilt-card:active::before { opacity: 1; animation: auroraShift 2s ease infinite; }
+
+        .skill-box { padding: clamp(30px, 3vw, 50px) 25px; text-align: center; height: 100%; }
+        .experience-card { padding: clamp(40px, 4vw, 60px); }
+        .project-card { padding: clamp(30px, 3vw, 50px); height: 100%; display: flex; flex-direction: column; justify-content: space-between;}
+
+        .experience-logo {
+            position: absolute; top: 50%; right: 5%; transform: translateY(-50%) translateZ(50px); width: clamp(160px, 15vw, 260px); z-index: 10; object-fit: contain; border-radius: 20px;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.15); background: #fff; padding: 30px; transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .experience-card:hover .experience-logo, .experience-card:active .experience-logo { transform: translateY(-50%) translateZ(80px) scale(1.2) rotate(5deg); box-shadow: 0 35px 70px rgba(0, 102, 255, 0.4); }
+
+        .experience-card-content { padding-right: clamp(0px, 30vw, 350px); }
+        @media(max-width: 768px) { .experience-card-content { padding-right: 0; } .experience-logo { position: relative; top: auto; right: auto; transform: translateZ(50px); margin-bottom: 30px; display: block; } .experience-card:hover .experience-logo, .experience-card:active .experience-logo { transform: translateZ(80px) scale(1.1); } }
+        
+        .experience-card h4 { color: var(--text-main); font-weight: 900; font-size: clamp(1.8rem, 3vw, 2.5rem);}
+        .experience-card p, .experience-card ul { color: var(--text-light) !important; font-size: clamp(1.05rem, 1.5vw, 1.25rem); font-weight: 600; line-height: 1.9;}
+
+        .skill-icon { font-size: 4.5rem; color: var(--accent); margin-bottom: 35px; text-shadow: 0 0 30px var(--accent-glow); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .skill-box:hover .skill-icon, .skill-box:active .skill-icon { transform: scale(1.5) translateY(-15px); text-shadow: 0 0 50px rgba(0, 212, 255, 0.9); }
+        .skill-list { list-style: none; padding: 0; color: var(--text-muted); font-size: clamp(1.05rem, 1.2vw, 1.15rem); font-weight: 800;}
+        .skill-list li { margin-bottom: 16px; }
+        .skill-box h4 { color: var(--text-main); font-weight: 900; font-size: clamp(1.6rem, 2vw, 2rem); margin-bottom: 25px;}
+
+        .project-title { font-size: clamp(1.4rem, 2vw, 1.8rem); font-weight: 900; color: var(--text-main); line-height: 1.5;}
+        .badge-tech {
+            background: linear-gradient(135deg, rgba(0, 102, 255, 0.15), rgba(138, 43, 226, 0.15)); color: var(--accent); font-weight: 900; padding: 10px 18px; margin-right: 12px; margin-bottom: 15px; border: 2px solid rgba(0, 102, 255, 0.4); 
+            display: inline-block; box-shadow: 0 8px 20px rgba(0, 102, 255, 0.1); border-radius: 10px; letter-spacing: 1px;
+        }
+        .project-desc { color: var(--text-light); font-size: clamp(1rem, 1.2vw, 1.15rem); line-height: 1.9; margin-bottom: 30px; font-weight: 600;} 
+        .project-hint { display: inline-block; margin-top: auto; color: var(--accent); font-size: 1.1rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; transition: all 0.4s; }
+        .project-card:hover .project-hint, .project-card:active .project-hint { text-shadow: 0 0 25px var(--accent-glow); transform: translateX(15px); color: var(--accent-purple); }
+
+        /* ===== CONTACT ===== */
+        .contact-item {
+            display: flex; align-items: center; margin-bottom: 35px; padding: 35px; border-radius: 30px; background: rgba(255, 255, 255, 0.95); 
+            border: 3px solid rgba(255,255,255,1); box-shadow: 0 20px 50px rgba(0, 102, 255, 0.1); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .contact-item:hover, .contact-item:active { transform: translateY(-12px) scale(1.04); box-shadow: 0 30px 60px var(--accent-glow); border-color: var(--accent); }
+        .contact-icon {
+            background: linear-gradient(135deg, var(--accent), var(--accent-purple)); color: white; width: 85px; height: 85px; display: flex; align-items: center; justify-content: center; border-radius: 50%;
+            font-size: 2.2rem; margin-right: 35px; flex-shrink: 0; box-shadow: 0 15px 35px var(--accent-glow); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .contact-item:hover .contact-icon, .contact-item:active .contact-icon { transform: rotate(25deg) scale(1.2); box-shadow: 0 20px 45px rgba(138, 43, 226, 0.6); }
+        .contact-text h5 { margin: 0 0 10px 0; font-size: 1.4rem; color: var(--text-main); font-weight: 900; text-transform: uppercase; letter-spacing: 1px;}
+        .contact-text p, .contact-text a { margin: 0; color: var(--text-light); font-size: 1.2rem; text-decoration: none; word-break: break-all; font-weight: 700; }
+        .contact-text a:hover { color: var(--accent); text-shadow: 0 0 15px var(--accent-glow); }
+
+        /* ===== 3D BOOK MODAL STYLES (ENHANCED FOR ALL DEVICES) ===== */
+        .book-modal-wrapper {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 9999; background: rgba(240, 244, 248, 0.9); backdrop-filter: blur(40px) saturate(250%);
+            display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.6s ease; perspective: 3000px;
+        }
+        .book-modal-wrapper.active { opacity: 1; pointer-events: all; }
+
+        .book-close-btn {
+            position: absolute; top: clamp(20px, 4vw, 50px); right: clamp(20px, 4vw, 60px); background: #fff; border: none; width: clamp(50px, 5vw, 75px); height: clamp(50px, 5vw, 75px); border-radius: 50%;
+            color: var(--accent); font-size: clamp(1.8rem, 2vw, 2.5rem); cursor: pointer; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 10;
+            box-shadow: 0 20px 50px rgba(0, 102, 255, 0.25); display: flex; align-items: center; justify-content: center;
+        }
+        .book-close-btn:hover, .book-close-btn:active { background: linear-gradient(135deg, var(--accent), var(--accent-purple)); color: #fff; transform: scale(1.25) rotate(90deg); box-shadow: 0 30px 60px var(--accent-glow); }
+
+        .book-core { width: 55vw; height: 85vh; max-width: 1100px; min-width: 700px; position: relative; transform-style: preserve-3d; will-change: transform; transition: transform 0.9s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        .book-cover { position: absolute; width: 100%; height: 100%; transform-origin: left center; transform-style: preserve-3d; z-index: 2; will-change: transform; transition: transform 0.9s cubic-bezier(0.25, 0.8, 0.25, 1); }
+
+        .book-modal-wrapper.active .book-core.open { transform: translateX(27.5vw) scale(1.05) rotateY(-12deg); }
+        .book-modal-wrapper.active .book-core.open .book-cover { transform: rotateY(-180deg); }
+
+        .book-page-right {
+            position: absolute; width: 100%; height: 100%; background: #ffffff; border-radius: 0 30px 30px 0;
+            box-shadow: inset 80px 0 120px rgba(0,0,0,0.05), 25px 25px 70px rgba(0, 102, 255, 0.2); 
+            padding: clamp(40px, 5vw, 80px); overflow-y: auto; border: 1px solid rgba(0,0,0,0.05); border-left: none;
+        }
+        .book-page-right::-webkit-scrollbar { width: 10px; } .book-page-right::-webkit-scrollbar-track { background: rgba(0,0,0,0.03); border-radius: 10px;}
+        .book-page-right::-webkit-scrollbar-thumb { background: linear-gradient(var(--accent), var(--accent-purple)); border-radius: 10px; }
+
+        .cover-front, .cover-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 30px 0 0 30px; border: 3px solid rgba(255,255,255,0.3); }
+        .cover-front { background: linear-gradient(135deg, var(--accent), var(--accent-purple)); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: clamp(40px, 5vw, 80px); box-shadow: 0 40px 90px var(--accent-glow), inset 0 0 60px rgba(255,255,255,0.4); }
+        .cover-back { transform: rotateY(180deg); background: #f8fafc; padding: clamp(40px, 5vw, 80px); border-right: none; box-shadow: inset -80px 0 120px rgba(0,0,0,0.05); }
+
+        .resp-list { padding-left: 20px; color: var(--text-light); font-size: clamp(1.05rem, 1.5vw, 1.25rem); line-height: 2.1; margin-top: 35px; font-weight: 600;}
+        .resp-list li { margin-bottom: 25px; }
+
+        /* ===== MOBILE BOOK FLIP LOGIC ===== */
+        @media (max-width: 991px) {
+            .book-core { width: 90vw; height: 70vh; min-width: 0; } .book-cover { transform-origin: top center; }
+            /* Instead of sliding right, it slides down and opens upward on mobile */
+            .book-modal-wrapper.active .book-core.open { transform: translateY(35vh) scale(1.02) rotateX(10deg); }
+            .book-modal-wrapper.active .book-core.open .book-cover { transform: rotateX(180deg); }
+            .cover-back { transform: rotateX(180deg); } .book-page-right { border-radius: 0 0 30px 30px; box-shadow: inset 0 60px 100px rgba(0,0,0,0.05); border-left: 1px solid rgba(0,0,0,0.05); border-top: none; }
+            .cover-front, .cover-back { border-radius: 30px 30px 0 0; } .cover-back { box-shadow: inset 0 -60px 100px rgba(0,0,0,0.05); }
+        }
+
+        /* ===== CONTINUOUS CINEMATIC BLUR REVEALS ===== */
+        /* Removes opacity and resets transform immediately when class is lost, applies slow transition ONLY when added */
+        .reveal { opacity: 0; transform: translateY(150px) scale(0.85); filter: blur(30px); transition: none; /* No transition on exit so it instantly resets */ }
+        .reveal.active { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); transition: all 1.2s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .reveal.active.delay-1 { transition-delay: 0.15s; } .reveal.active.delay-2 { transition-delay: 0.3s; } .reveal.active.delay-3 { transition-delay: 0.45s; } .reveal.active.delay-4 { transition-delay: 0.6s; }
+
+        /* ===== AUDIO TOGGLE BUTTON ===== */
+        .audio-toggle {
+            position: fixed; bottom: 40px; right: 40px; background: linear-gradient(135deg, var(--accent), var(--accent-purple)); color: white;
+            width: clamp(65px, 6vw, 85px); height: clamp(65px, 6vw, 85px); border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 1000; box-shadow: 0 20px 50px var(--accent-glow);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); font-size: clamp(1.4rem, 2vw, 1.8rem); border: 4px solid #fff;
+        }
+        .audio-toggle:hover, .audio-toggle:active { transform: scale(1.2) rotate(20deg); box-shadow: 0 25px 60px rgba(138, 43, 226, 0.8); }
+
+    </style>
+</head>
+<body data-bs-spy="scroll" data-bs-target=".navbar" data-bs-offset="90">
+
+    <!-- Glowing Custom Cursor -->
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-outline" id="cursorOutline"></div>
+
+    <!-- Ambient Floating Orbs -->
+    <div class="orb-container">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <!-- JS will inject particles here -->
+    </div>
+
+    <!-- Audio Element -->
+    <audio id="bg-audio" src="image/audio.mp3" preload="auto"></audio>
+    <div class="audio-toggle custom-hover" id="audioToggle" title="Play/Pause Music">
+        <i class="fas fa-volume-mute" id="audioIcon"></i>
+    </div>
+
+    <!-- Glorious Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top shadow-sm navbar-light">
+        <div class="container">
+            <a class="navbar-brand custom-hover" href="#home">Sunil<span class="text-gradient">.</span></a>
+            <button class="navbar-toggler custom-hover" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="fas fa-bars" style="color: var(--accent); font-size: 1.8rem;"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto text-center text-lg-start mt-3 mt-lg-0">
+                    <li class="nav-item"><a class="nav-link custom-hover" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link custom-hover" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link custom-hover" href="#skills">Skills</a></li>
+                    <li class="nav-item"><a class="nav-link custom-hover" href="#experience">Experience</a></li>
+                    <li class="nav-item"><a class="nav-link custom-hover" href="#projects">Projects</a></li>
+                    <li class="nav-item"><a class="nav-link custom-hover" href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="video-background-wrapper">
+            <video autoplay loop muted playsinline webkit-playsinline preload="auto" poster="image/fallback.jpg" class="video-background">
+                <source src="image/back.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-7 order-2 order-lg-1 mt-5 mt-lg-0 parallax-wrapper" id="heroTextWrapper">
+                    <div class="hero-content-box reveal active">
+                        <p class="hero-subtitle">Hello, I'm</p>
+                        <h1 class="hero-title text-gradient">Sunil Kumar Nayak</h1>
+                        <div class="typing-text" id="typewriter"></div>
+                        <div class="mt-4">
+                            <a href="#projects" class="btn-custom custom-hover">View Projects</a>
+                            <a href="#contact" class="btn-outline-custom custom-hover">Contact Me</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5 text-center order-1 order-lg-2 profile-parallax" id="heroImgWrapper">
+                    <div class="profile-wrapper reveal active delay-2">
+                        <img src="image/Img.jpeg" alt="Sunil Kumar Nayak" class="profile-img">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Animated Scroll Indicator -->
+        <div class="scroll-indicator">
+            <div class="mouse"></div>
+            <p>Scroll</p>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="bg-alt">
+        <div class="container reveal">
+            <h2 class="section-title"><span class="text-gradient">About Me</span></h2>
+            <div class="row align-items-center">
+                <div class="col-lg-12 text-center">
+                    <h3 class="mb-5" style="color: var(--text-main); font-weight: 900; font-size: clamp(2rem, 4vw, 3rem);">Full-Stack Java Developer</h3>
+                    <p style="color: var(--text-light); line-height: 2.2; font-weight: 600; font-size: clamp(1.1rem, 2vw, 1.4rem); max-width: 1100px; margin: 0 auto;">
+                        I am a passionate Full-Stack Developer with expertise in building scalable, secure, and high-performance applications. With hands-on experience in <strong style="color: var(--accent);">Java Spring Boot, Microservices, AWS Cloud, and DevOps</strong>, I take end-to-end ownership across development, testing, and deployment.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills">
+        <div class="container">
+            <h2 class="section-title reveal"><span class="text-gradient">Technical Skills</span></h2>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3 reveal delay-1">
+                    <div class="skill-box tilt-card custom-hover">
+                        <i class="fab fa-java skill-icon"></i><h4>Backend</h4>
+                        <ul class="skill-list mt-4">
+                            <li>Java 8/17</li><li>Spring Boot, MVC, Data JPA</li><li>Microservices Architecture</li>
+                            <li>REST APIs, Kafka</li><li>Spring Security, OAuth2</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 reveal delay-2">
+                    <div class="skill-box tilt-card custom-hover">
+                        <i class="fab fa-aws skill-icon"></i><h4>Cloud (AWS)</h4>
+                        <ul class="skill-list mt-4">
+                            <li>EC2, S3, RDS, VPC</li><li>IAM, CloudWatch, SNS</li>
+                            <li>Route53, EBS, Glacier</li><li>AWS EKS (Kubernetes)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 reveal delay-3">
+                    <div class="skill-box tilt-card custom-hover">
+                        <i class="fas fa-server skill-icon"></i><h4>DevOps & Tools</h4>
+                        <ul class="skill-list mt-4">
+                            <li>Docker & Kubernetes</li><li>Jenkins CI/CD Pipelines</li>
+                            <li>HashiCorp Vault</li><li>Git, GitLab, Bitbucket</li><li>JUnit, Mockito, SonarQube</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 reveal delay-4">
+                    <div class="skill-box tilt-card custom-hover">
+                        <i class="fas fa-database skill-icon"></i><h4>Database & UI</h4>
+                        <ul class="skill-list mt-4">
+                            <li>MySQL, Oracle, MongoDB</li><li>Redis Cache, DynamoDB</li>
+                            <li>HTML, CSS, Bootstrap</li><li>Angular & Vue JS Basics</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="bg-alt">
+        <div class="container">
+            <h2 class="section-title reveal"><span class="text-gradient">Work Experience</span></h2>
+            <div class="row justify-content-center">
+                <div class="col-lg-11 reveal delay-1">
+                    <div class="experience-card tilt-card custom-hover">
+                        <img src="image/logo.png" alt="GS Logo" class="experience-logo">
+                        <div class="experience-card-content">
+                            <div class="d-flex justify-content-between align-items-start align-items-sm-center mb-4 flex-column flex-sm-row">
+                                <h4 class="mb-4 mb-sm-0 text-dark">Java Developer</h4>
+                                <span class="badge px-5 py-3" style="background: linear-gradient(135deg, var(--accent), var(--accent-purple)); box-shadow: 0 10px 25px var(--accent-glow); font-size: 1.2rem; font-weight: 900; border: 3px solid #fff; border-radius: 50px;">04/2023 - Present</span>
+                            </div>
+                            <h6 class="mb-4" style="color: var(--accent); font-weight: 900; font-size: 1.8rem; text-transform: uppercase; letter-spacing: 1px;">Goldman Sachs</h6>
+                            <p style="font-size: 1.25rem; line-height: 2; font-weight: 600;">Currently engaged at Goldman Sachs, responsible for designing, developing microservices and enterprise-level solutions for the Investment Banking domain.</p>
+                            <p style="font-size: 1.25rem; line-height: 2; font-weight: 600;"> I specialize in the Investment Banking domain, developing risk and security platforms, optimizing databases, and deploying containerized applications.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+        <div class="container">
+            <h2 class="section-title reveal"><span class="text-gradient">Key Projects</span></h2>
+            <div class="row g-4">
+                
+                <div class="col-lg-4 col-md-6 reveal delay-1">
+                    <div class="project-card tilt-card custom-hover" onclick="openBook('ibd')">
+                        <h3 class="project-title">IBD Financial Solutions – Goldman Sachs</h3>
+                        <div class="mb-4 mt-4">
+                            <span class="badge badge-tech">Spring Boot</span>
+                            <span class="badge badge-tech">Microservices</span>
+                            <span class="badge badge-tech">AWS</span>
+                        </div>
+                        <p class="project-desc">Goldman Sachs in-house Risk & Security platform. Designed REST APIs secured with OAuth2/JWT. Provisioned AWS infrastructure and deployed apps on Kubernetes.</p>
+                        <span class="project-hint">Click to Open <i class="fas fa-book-open ms-2"></i></span>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 reveal delay-2">
+                    <div class="project-card tilt-card custom-hover" onclick="openBook('financing')">
+                        <h3 class="project-title">IBD Project Deal Origination</h3>
+                        <div class="mb-4 mt-4">
+                            <span class="badge badge-tech">Vault</span>
+                            <span class="badge badge-tech">Jenkins CI/CD</span>
+                            <span class="badge badge-tech">FluentBit</span>
+                        </div>
+                        <p class="project-desc">Provisioned HashiCorp Vault via Conduit for secret management. Configured FluentBit ingestion for centralized logging. Created declarative Jenkins pipelines.</p>
+                        <span class="project-hint">Click to Open <i class="fas fa-book-open ms-2"></i></span>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 reveal delay-3">
+                    <div class="project-card tilt-card custom-hover" onclick="openBook('health')">
+                        <h3 class="project-title">Health Insurance Platform</h3>
+                        <div class="mb-4 mt-4">
+                            <span class="badge badge-tech">Spring Core</span>
+                            <span class="badge badge-tech">REST API</span>
+                            <span class="badge badge-tech">Hibernate</span>
+                        </div>
+                        <p class="project-desc">Freelance project for a US client. Built a unified online platform for citizens to apply for health plans. Handled backend logic, Data JPA mapping, and exceptions.</p>
+                        <span class="project-hint">Click to Open <i class="fas fa-book-open ms-2"></i></span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="bg-alt">
+        <div class="container">
+            <h2 class="section-title reveal"><span class="text-gradient">Contact Me</span></h2>
+            <div class="row justify-content-center">
+                <div class="col-lg-11">
+                    <div class="row">
+                        <div class="col-md-6 reveal delay-1"><div class="contact-item custom-hover"><div class="contact-icon"><i class="fas fa-envelope"></i></div><div class="contact-text"><h5>Email</h5><a href="mailto:sunilkumar.skn03@gmail.com">sunilkumar.skn03@gmail.com</a></div></div></div>
+                        <div class="col-md-6 reveal delay-2"><div class="contact-item custom-hover"><div class="contact-icon"><i class="fas fa-phone-alt"></i></div><div class="contact-text"><h5>Phone</h5><p>+91 9348726002</p></div></div></div>
+                        <div class="col-md-6 reveal delay-3"><div class="contact-item custom-hover"><div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div><div class="contact-text"><h5>Location</h5><p>Bengaluru, Karnataka, India</p></div></div></div>
+                        <div class="col-md-6 reveal delay-4"><div class="contact-item custom-hover"><div class="contact-icon"><i class="fab fa-github"></i></div><div class="contact-text"><h5>GitHub</h5><a href="https://github.com/SunilKumarNayak02" target="_blank">github.com/SunilKumarNayak02</a></div></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-5 text-center" style="background-color: transparent; border-top: 1px solid rgba(0,0,0,0.1); position: relative; z-index: 5;">
+        <p class="mb-0" style="color: var(--text-muted); font-size: 1.2rem; font-weight: 800;">&copy; 2024 Sunil Kumar Nayak. Built with Custom UI & Bootstrap 5.</p>
+    </footer>
+
+    <!-- 3D BOOK MODAL OVERLAY -->
+    <div class="book-modal-wrapper" id="bookModalWrapper">
+        <button class="book-close-btn custom-hover" onclick="closeBook()"><i class="fas fa-times"></i></button>
+        <div class="book-core" id="bookCore">
+            <!-- Right Page (Inside Content) -->
+            <div class="book-page-right">
+                <h4 style="color: var(--accent); margin-bottom: 35px; font-weight: 900; font-size: clamp(1.8rem, 3vw, 2.4rem);"><span class="text-gradient">Roles & Responsibilities</span></h4>
+                <ul class="resp-list" id="bookRespList">
+                    <!-- Populated dynamically -->
+                </ul>
+            </div>
+            
+            <!-- Cover (Left Side) -->
+            <div class="book-cover" id="bookCover">
+                <div class="cover-front">
+                    <i class="fas fa-laptop-code text-white mb-5" style="font-size: clamp(4rem, 6vw, 7rem); text-shadow: 0 0 40px rgba(255,255,255,0.8);"></i>
+                    <h2 id="bookTitleFront" style="font-weight: 900; font-size: clamp(2rem, 4vw, 3.2rem); color: white; text-shadow: 0 10px 30px rgba(0,0,0,0.3); line-height: 1.2;">Project Title</h2>
+                    <p style="color: rgba(255,255,255,0.9); font-size: clamp(1rem, 1.5vw, 1.4rem); letter-spacing: 5px; text-transform: uppercase; font-weight: 900; margin-top: 30px;">Goldman Sachs</p>
+                </div>
+                <div class="cover-back">
+                    <h3 id="bookTitleInside" style="color: var(--text-main); margin-bottom: 35px; font-weight: 900; font-size: clamp(1.8rem, 3vw, 2.6rem); line-height: 1.3;">Project Title</h3>
+                    <div style="background: rgba(0,102,255,0.08); padding: 35px; border-radius: 20px; border: 2px solid rgba(0,102,255,0.4); margin-bottom: 40px; box-shadow: inset 0 0 25px rgba(255,255,255,0.8);">
+                        <h6 style="color: var(--accent); margin-bottom: 15px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; font-size: 1.1rem;">Tech Stack</h6>
+                        <p id="bookTech" style="color: var(--text-main); font-size: clamp(1rem, 1.5vw, 1.25rem); margin: 0; font-weight: 800; line-height: 1.7;"></p>
+                    </div>
+                    <p id="bookDesc" style="color: var(--text-muted); font-size: clamp(1rem, 1.5vw, 1.25rem); line-height: 1.9; font-weight: 700;"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // --- ADD GLOWING PARTICLES TO BACKGROUND ---
+        const orbContainer = document.querySelector('.orb-container');
+        for(let i=0; i<30; i++) {
+            let particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + 'vw';
+            particle.style.top = Math.random() * 100 + 'vh';
+            particle.style.animationDuration = (Math.random() * 10 + 5) + 's';
+            particle.style.animationDelay = (Math.random() * 5) + 's';
+            particle.style.opacity = Math.random();
+            orbContainer.appendChild(particle);
+        }
+
+        // --- GLORIOUS CUSTOM CURSOR (MOUSE + TOUCH) ---
+        const cursorDot = document.getElementById('cursorDot');
+        const cursorOutline = document.getElementById('cursorOutline');
+        let isTouch = false;
+
+        function updateCursor(x, y) {
+            cursorDot.style.left = `${x}px`; cursorDot.style.top = `${y}px`;
+            cursorOutline.animate({ left: `${x}px`, top: `${y}px` }, { duration: 400, fill: "forwards" });
+        }
+
+        // Mouse Events
+        window.addEventListener('mousemove', (e) => {
+            if(!isTouch) { updateCursor(e.clientX, e.clientY); cursorDot.classList.add('active'); cursorOutline.classList.add('active'); }
+        });
+
+        // Touch Events for Mobile Cursor Aura
+        window.addEventListener('touchstart', (e) => {
+            isTouch = true;
+            const touch = e.touches[0]; updateCursor(touch.clientX, touch.clientY);
+            cursorDot.classList.add('active'); cursorOutline.classList.add('active');
+        }, {passive: true});
+        window.addEventListener('touchmove', (e) => {
+            const touch = e.touches[0]; updateCursor(touch.clientX, touch.clientY);
+        }, {passive: true});
+        window.addEventListener('touchend', () => {
+            cursorDot.classList.remove('active'); cursorOutline.classList.remove('active');
+            // reset 3D parallax on touch end
+            document.documentElement.style.setProperty('--mouse-x', `0deg`);
+            document.documentElement.style.setProperty('--mouse-y', `0deg`);
+            document.querySelectorAll('.tilt-card').forEach(c => c.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`);
+        });
+
+        // Magnetic Hover Effect
+        document.querySelectorAll('.custom-hover').forEach(el => {
+            el.addEventListener('mouseenter', () => { cursorOutline.style.width = '80px'; cursorOutline.style.height = '80px'; cursorOutline.style.background = 'rgba(0, 102, 255, 0.15)'; });
+            el.addEventListener('mouseleave', () => { cursorOutline.style.width = '50px'; cursorOutline.style.height = '50px'; cursorOutline.style.background = 'transparent'; });
+            // Touch trigger for magnetic effect
+            el.addEventListener('touchstart', () => { cursorOutline.style.width = '80px'; cursorOutline.style.height = '80px'; cursorOutline.style.background = 'rgba(138, 43, 226, 0.2)'; }, {passive:true});
+            el.addEventListener('touchend', () => { cursorOutline.style.width = '50px'; cursorOutline.style.height = '50px'; cursorOutline.style.background = 'transparent'; });
+        });
+
+        // --- 3D INTERACTIVE TILT (MOUSE & TOUCH) ---
+        function handleTilt(e, card) {
+            const rect = card.getBoundingClientRect();
+            const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+            const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+            
+            const x = clientX - rect.left;
+            const y = clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = ((y - centerY) / centerY) * -15;
+            const rotateY = ((x - centerX) / centerX) * 15;
+            
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+        }
+
+        document.querySelectorAll('.tilt-card').forEach(card => {
+            // Mouse
+            card.addEventListener('mousemove', (e) => handleTilt(e, card));
+            card.addEventListener('mouseleave', () => { card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`; });
+            // Touch
+            card.addEventListener('touchmove', (e) => { handleTilt(e, card); }, {passive: true});
+        });
+
+        // --- HERO 3D PARALLAX (MOUSE & TOUCH) ---
+        function handleHeroParallax(clientX, clientY) {
+            const x = (clientX / window.innerWidth - 0.5) * 30; // Max 15 deg tilt
+            const y = (clientY / window.innerHeight - 0.5) * 30;
+            document.documentElement.style.setProperty('--mouse-x', `${x}deg`);
+            document.documentElement.style.setProperty('--mouse-y', `${-y}deg`);
+        }
+        
+        const heroSection = document.getElementById('home');
+        heroSection.addEventListener('mousemove', (e) => { if(!isTouch) handleHeroParallax(e.clientX, e.clientY); });
+        heroSection.addEventListener('touchmove', (e) => { handleHeroParallax(e.touches[0].clientX, e.touches[0].clientY); }, {passive: true});
+
+
+        // --- DATA FOR BOOK MODAL ---
+        const projectData = {
+            'ibd': {
+                title: 'IBD Financial Solutions',
+                tech: 'Spring Boot • Microservices • Angular • Vue JS • Oracle • AWS',
+                desc: 'Worked on Goldman Sachs in-house Risk & Security platform in investment banking domain.',
+                responsibilities: [
+                    'Developed Deal Management platform using Spring Boot, Microservices, AWS, handling 10K+ requests/day with latency <200 ms, improving release cycles by 20%.',
+                    'Built 8+ microservices with Eureka, Config Server, API Gateway, Feign Client, Circuit Breaker, load balancer, improving modularity, deployment time by 30%, and system resilience and develop data layers via JPA/CRUD and backward compatibility and partial updates & custom find By queries.',
+                    'Designed and secured REST APIs using Spring Security, OAuth2, JWT, and Rest Template with validation, versioning, exception handling, Spring Actuator/Admin monitoring for improving stability.',
+                    'Optimized performance using Redis caching, query tuning, pagination, BLOB/CLOB handling, reducing DB load by 40% and response time by 25–30%.',
+                    'Worked in Agile/Scrum environment, participated in sprint planning, stand-ups & retrospectives.',
+                    'Integrated Razorpay, Stripe, implemented batch jobs, and ensured quality via JUnit, Mockito, JaCoCo (80%+ coverage) in Agile/Scrum with Jira, GitLab.',
+                    'Provisioned AWS infra: EC2, VPC, Subnets, SG, IGW, Route Tables, NACLs, Managed RDS (SQL/ Aurora) & S3 with Object Lock & Lifecycle rules, Secured access via IAM monitored using CloudWatch, SNS & Lambda.',
+                    'Automated infra using CloudFormation & Terraform, Containerized apps via Docker (Images, Volumes, Networking, Hub), Deployed on Kubernetes (Master/Worker, HPA, Replica Sets, Blue-Green), reducing infra effort by 50% and cost by 20%.'
+                ]
+            },
+            'financing': {
+                title: 'Financing Solution (IBD)',
+                tech: 'HashiCorp Vault • Jenkins • FluentBit • Prometheus • Grafana',
+                desc: 'Financing Solution, IBD Project Deal Origination. Worked on Goldman Sachs in-house Risk & Security platform in investment banking domain.',
+                responsibilities: [
+                    'Provisioned HashiCorp Vault via Conduit, configuring hierarchy, identities & Linux auth for system ac.',
+                    'Secrets delivery using SecurePush managing secrets.conf, activation profiles & copy scripts.',
+                    'Integrated Vault with host deployments via Conduit pipelines, release tags & approved GCM workflows.',
+                    'Validated credential distribution via PACT ensuring secure storage, access control & runtime fetch.',
+                    'Identified vulnerable Tomcat versions via mvn dependency:tree analyzing transitive dependencies. Traced parent POM sources & excluded unused vulnerable Tomcat artifacts. Upgraded Spring & related dependencies ensuring vulnerability compliance.',
+                    'Onboarded BQL tenants via Airlock creating MRs, provisioning namespaces & validating log UI visibility.',
+                    'Configured FluentBit ingestion via GNS subscriptions, ingest endpoints & Conduit logging pipelines. Implemented JSON parsers, custom log mappings & start/stop scripts managing FluentBit runtimes.',
+                    'Deployed configs across UAT/Prod, validated log flows & scheduled Autosys jobs for process automation.',
+                    'Configured centralized settings via Spring Cloud Config with Admin Server & Zipkin tracing.',
+                    'Ensured quality via unit, integration & E2E testing using JUnit, Mockito & JaCoCo.',
+                    'Developed REST APIs via RestTemplate with validation & exception handling.',
+                    'Secrets monitored via Prometheus/Grafana. Written Jenkins CI/CD (Declarative, Scripted Pipeline Scripts).',
+                    'Implemented Jenkins Master and Slave (Agent) architecture and developed Declarative Pipelines with email notifications, parallel stages, and shared libraries to automate and optimize end-to-end build and deployment workflows.'
+                ]
+            },
+            'health': {
+                title: 'Health Insurance Platform',
+                tech: 'Spring Core • Spring Boot • JPA/Hibernate • REST • Jenkins',
+                desc: 'Freelancing Project, Client: USA California. Provides a unified online platform for California citizens to apply for health and insurance plans based on profiles.',
+                responsibilities: [
+                    'Worked on Spring Core: IoC, Dependency Injection, Bean lifecycle, annotation and XML configuration.',
+                    'Developed apps using Spring Boot with auto-configuration, starters, and dependency management.',
+                    'Built REST APIs using @RestController, @GetMapping, @PostMapping with JSON/XML conversion.',
+                    'Configured YAML, profiles, and injected values using @Value and @Configuration.',
+                    'Used Spring Boot features: DataSource auto-config, runners, and component scanning.',
+                    'Integrated Spring Data JPA for CRUD, entity mapping, transactions, and repositories.',
+                    'Applied validation, exception handling, and logging for stable applications.',
+                    'Installed and configured Jenkins, created Jenkins jobs integrated with Git, Maven, and Tomcat, and configured build parameters, user creation, and role-based access control for secure CI/CD execution.',
+                    'Worked with Jenkins Scripted Pipelines and configured Multi-Branch Pipelines to handle multiple Git branches and automate branch-based build and deployment processes.'
+                ]
+            }
+        };
+
+        const modalWrapper = document.getElementById('bookModalWrapper');
+        const bookCore = document.getElementById('bookCore');
+        
+        function openBook(projectId) {
+            const data = projectData[projectId];
+            if(!data) return;
+
+            document.getElementById('bookTitleFront').innerText = data.title;
+            document.getElementById('bookTitleInside').innerText = data.title;
+            document.getElementById('bookTech').innerText = data.tech;
+            document.getElementById('bookDesc').innerText = data.desc;
+            
+            const listContainer = document.getElementById('bookRespList');
+            listContainer.innerHTML = ''; 
+            data.responsibilities.forEach(item => {
+                const li = document.createElement('li');
+                li.innerText = item;
+                listContainer.appendChild(li);
+            });
+
+            modalWrapper.classList.add('active');
+            setTimeout(() => { bookCore.classList.add('open'); }, 10); 
+        }
+
+        function closeBook() {
+            bookCore.classList.remove('open');
+            setTimeout(() => { modalWrapper.classList.remove('active'); }, 800); 
+        }
+
+        // --- AUDIO & OTHER LOGIC ---
+        const bgAudio = document.getElementById('bg-audio');
+        const audioToggle = document.getElementById('audioToggle');
+        const audioIcon = document.getElementById('audioIcon');
+        let hasPlayed = false;
+
+        function playAudioOnce() {
+            if (!hasPlayed) {
+                bgAudio.play().then(() => {
+                    hasPlayed = true;
+                    audioIcon.classList.remove('fa-volume-mute');
+                    audioIcon.classList.add('fa-volume-up');
+                    window.removeEventListener('scroll', playAudioOnce);
+                    document.removeEventListener('click', playAudioOnce);
+                    document.removeEventListener('touchstart', playAudioOnce);
+                }).catch(err => { console.log("Waiting for interaction..."); });
+            }
+        }
+        window.addEventListener('scroll', playAudioOnce);
+        document.addEventListener('click', playAudioOnce);
+        document.addEventListener('touchstart', playAudioOnce, {passive: true});
+
+        audioToggle.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+            if (bgAudio.paused) { bgAudio.play(); audioIcon.classList.replace('fa-volume-mute', 'fa-volume-up'); hasPlayed = true; } 
+            else { bgAudio.pause(); audioIcon.classList.replace('fa-volume-up', 'fa-volume-mute'); }
+        });
+        bgAudio.addEventListener('ended', () => { audioIcon.classList.replace('fa-volume-up', 'fa-volume-mute'); });
+
+        const navLinks = document.querySelectorAll('.nav-link');
+        const menuToggle = document.getElementById('navbarNav');
+        const bsCollapse = new bootstrap.Collapse(menuToggle, {toggle: false});
+        navLinks.forEach((l) => { l.addEventListener('click', () => { if (menuToggle.classList.contains('show')) bsCollapse.toggle(); }) });
+
+        const textArray = ["Java Backend Developer.", "Spring Boot Expert.", "AWS Cloud Enthusiast.", "DevOps Engineer."];
+        let textIndex = 0, charIndex = 0; const typeTarget = document.getElementById("typewriter");
+        function type() {
+            if (charIndex < textArray[textIndex].length) {
+                typeTarget.innerHTML += textArray[textIndex].charAt(charIndex); charIndex++; setTimeout(type, 80);
+            } else setTimeout(erase, 2500);
+        }
+        function erase() {
+            if (charIndex > 0) {
+                typeTarget.innerHTML = textArray[textIndex].substring(0, charIndex - 1); charIndex--; setTimeout(erase, 40);
+            } else { textIndex++; if (textIndex >= textArray.length) textIndex = 0; setTimeout(type, 500); }
+        }
+        document.addEventListener("DOMContentLoaded", () => setTimeout(type, 1000));
+
+        // --- CONTINUOUS EVERY-TIME SCROLL REVEAL (THE FIX) ---
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementBottom = reveals[i].getBoundingClientRect().bottom;
+
+                // If element is inside the viewport
+                if (elementTop < windowHeight - 100 && elementBottom > 0) {
+                    reveals[i].classList.add("active");
+                } else {
+                    // If element goes out of view, remove 'active' to reset it instantly for the next time
+                    reveals[i].classList.remove("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal); reveal(); 
+    </script>
+</body>
+</html>
